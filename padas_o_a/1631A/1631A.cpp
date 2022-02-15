@@ -1,8 +1,10 @@
 #include <iostream>
-#include <stdlib.h>
+#include <cstdlib>
+#include <vector>
+#include <algorithm>
 
-int comp(const void * a, const void * b) {
-  return ( - *(int*)a + *(int*)b );
+bool comp(int a, int b) {
+  return b < a;
 }
 
 int main() {
@@ -11,8 +13,8 @@ int main() {
     std::cin >> requests;
     for (int i = 0; i < requests; ++i) {
         std::cin >> size;
-        int* A = new int[size];
-        int* B = new int[size];
+        std::vector<int> A(size);
+        std::vector<int> B(size);
         for (int j = 0; j < size; ++j) {
             std::cin >> A[j];
         }
@@ -26,8 +28,8 @@ int main() {
                 B[j] = swap;
             }
         }
-        qsort(A, size, sizeof(int), comp);
-        qsort(B, size, sizeof(int), comp);
+        std::sort(A.begin(), A.end(), comp);
+        std::sort(B.begin(), B.end(), comp);
         std::cout << A[0] * B[0] << "\n";
     }
     return 0;
