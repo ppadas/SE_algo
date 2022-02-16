@@ -1,49 +1,155 @@
-class Rational{
-public:
-    Rational() = default;
-    Rational(const Rational&) = default;
-    Rational(const int numerator, const int denominator = 1)
-    : numerator(numerator), denominator(denominator) {
-        //проверка на 0 знаменателя + сократить на Нод
-        if (0 == denominator) {
-            //throw
-        }
+#include "rational.h"
+
+int Rational::getNumerator() const {
+    return numerator;
+}
+
+int Rational::getDenominator() const {
+    return denominator;
+}
+
+Rational& Rational::operator+=(const Rational& right) {
+    numerator = right.denominator * numerator + right.numerator * denominator;
+    denominator = right.denominator * denominator;
+    normalize();
+    return *this;
+}
+
+Rational& Rational::operator-=(const Rational& right) {
+    numerator = right.denominator * numerator - right.numerator * denominator;
+    denominator = right.denominator * denominator;
+    normalize();
+    return *this;
+}
+
+Rational& Rational::operator/=(const Rational& right) {
+    if (right == Rational(0)) {
+        throw rationalException("Devision to 0");
     }
+    numerator = right.denominator * numerator;
+    denominator = right.numerator * denominator;
+    normalize();
+    return *this;
+}
 
-    ~Rational() = default;
-    //Хочу конструктор перемещения
-    //Хочу получение полей
+Rational& Rational::operator*=(const Rational& right) {
+    numerator = right.numerator * numerator;
+    denominator = right.denominator * denominator;
+    normalize();
+    return *this;
+}
 
-    Rational& operator+=(const Rational& other);
-    Rational& operator-=(const Rational& other);
-    Rational& operator/=(const Rational& right);
-    Rational& operator*=(const Rational& right);
-    bool operator<(const Rational& other) const;
-    bool operator==(const Rational& other) const;
-    bool operator!=(const Rational& other) const;
-    bool operator>(const Rational& other) const;
-    bool operator<=(const Rational& other) const;
-    bool operator>=(const Rational& other) const;
-    Rational& operator-();
-    Rational& operator++();
-    Rational& operator--();
-    Rational operator++(int);
-    Rational operator--(int);
+bool Rational::operator==(const Rational& right) const {
+    return numerator == right.numerator && denominator == right.denominator;
+}
 
-private:
-    void normalize() {
+bool Rational::operator<(const Rational& right) const {
+    return (*this - right).signum() == -1;
+}
 
+bool Rational::operator>(const Rational& right) const {
+    return right < *this;
+}
+
+bool Rational::operator!=(const Rational& right) const {
+    return !(*this == right);
+}
+
+bool Rational::operator<=(const Rational& right) const {
+    return !(*this > right);
+}
+
+bool Rational::operator>=(const Rational& right) const {
+    return !(*this < right);
+}
+
+Rational& Rational::operator-() {
+    numerator *= -1;
+    return *this;
+}
+
+Rational& Rational::operator++() {
+    numerator += denominator;
+    normalize();
+    return *this;
+}
+
+Rational& Rational::operator--() {
+    numerator -= denominator;
+    normalize();
+    return *this;
+}
+
+Rational Rational::operator++(int) {
+    Rational old_value = *this;
+    ++(*this);
+    return old_value;
+}
+
+Rational Rational::operator--(int) {
+    Rational old_value = *this;
+    --(*this);
+    return old_value;
+}
+
+
+int Rational::gcd (const int a, const int b) const {
+    int bigger = std::max(a, b);
+    int smaller = std::min(a, b);
+    while (smaller != 0) {
+        bigger %= smaller;
+        std::swap(bigger, smaller);
     }
+    return bigger;
+}
 
-    //взаимно простые числитель и знаменатель
-    int numerator = 0;
-    //натуральное число
-    int denominator = 1;
-};
+void Rational::normalize() {
+    if (denominator < 0) {
+        numerator *= -1;
+        denominator *= -1;
+    }
+    int gcd_value = gcd(std::abs(numerator), denominator);
+    denominator /= gcd_value;
+    numerator /= gcd_value;
+}
 
-std::istream& operator>>(std::istream& in, Rational& bigInt);
-std::ostream& operator<<(std::ostream& out, const Rational& bigInt);
+int Rational::signum() const {
+    if (numerator == 0) {
+        return 0;
+    }
+    return numerator > 0 ? 1 : -1;
+}
+
+void Rational::updateWith(const int num, const int den) {
+    numerator = num;
+    denominator = den;
+}
 
 Rational operator+(const Rational& left, const Rational& right) {
     return Rational(left) += right;
+}
+
+Rational operator-(const Rational& left, const Rational& right) {
+    return Rational(left) -= right;
+}
+
+Rational operator*(const Rational& left, const Rational& right) {
+    return Rational(left) *= right;
+}
+
+Rational operator/(const Rational& left, const Rational& right) {
+    return Rational(left) /= right;
+}
+
+std::istream& operator>>(std::istream& in, Rational& value) {
+    int numerator = 0;
+    int denominator = 1;
+    in >> numerator >> denominator;
+    value.updateWith(numerator, denominator);
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const Rational& value) {
+    out << value.getNumerator() << '\\' << value.getDenominator();
+    return out;
 }
