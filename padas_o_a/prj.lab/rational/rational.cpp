@@ -108,6 +108,9 @@ void Rational::normalize() {
         numerator *= -1;
         denominator *= -1;
     }
+    if (numerator == 0) {
+        denominator = 1;
+    }
     int gcd_value = gcd(std::abs(numerator), denominator);
     denominator /= gcd_value;
     numerator /= gcd_value;

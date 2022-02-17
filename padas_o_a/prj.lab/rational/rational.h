@@ -16,8 +16,11 @@ private:
 class Rational{
 public:
     Rational() = default;
-    Rational(const Rational&) = default;
-    Rational(const int numerator, const int denominator = 1)
+    Rational(const Rational&) = default; //конструктор копирования
+    Rational& operator=(const Rational&) = default; //присваивание копированием
+    Rational(Rational&&) = default; //конструктор перемещения
+    Rational& operator=(Rational&& x) = default; //присваивание перемещением
+    Rational(const int numerator, const int denominator = 1) //конструктор
     : numerator(numerator), denominator(denominator) {
         if (0 == denominator) {
             throw rationalException("Denominator can't be 0");
