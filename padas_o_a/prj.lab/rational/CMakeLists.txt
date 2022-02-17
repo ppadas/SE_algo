@@ -3,6 +3,9 @@ project(rational)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 
-set(SRC_LIST rational.h rational.cpp doctest.h test.cpp)
+set(SRC_LIST doctest.h test.cpp)
 
-add_executable(${PROJECT_NAME} ${SRC_LIST})
+add_library(rational rational.cpp rational.h)
+add_executable(rational_test ${SRC_LIST})
+
+target_link_libraries(rational_test rational)
