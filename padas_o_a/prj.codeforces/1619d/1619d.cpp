@@ -15,20 +15,20 @@ void complete(std::vector<std::vector<int>>& enjoy, int shops, int friends) {
 bool possible(std::vector<std::vector<int>> enjoy, int value) {
     std::vector<int> shops_fit_for(enjoy.size(), 0);
     std::vector<bool> frieds_satisfied(enjoy[0].size(), false);
-    for (int i = 0; i < enjoy.size(); ++i) {
-        for (int j = 0; j < enjoy[i].size(); ++j) {
+    for (uint i = 0; i < enjoy.size(); ++i) {
+        for (uint j = 0; j < enjoy[i].size(); ++j) {
             if (enjoy[i][j] >= value) {
                 frieds_satisfied[j] = true;
                 ++shops_fit_for[i];
             }
         }
     }
-    for (int i = 0; i < enjoy[0].size(); ++i) {
+    for (uint i = 0; i < enjoy[0].size(); ++i) {
         if (!frieds_satisfied[i]) {
             return false;
         }
     }
-    for (int j = 0; j < enjoy.size(); ++j) {
+    for (uint j = 0; j < enjoy.size(); ++j) {
         if (shops_fit_for[j] >= 2 ) {
             return true;
         }
