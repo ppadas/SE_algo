@@ -2,36 +2,36 @@
 #include <iostream>
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "doctest.h"
+#include <doctest.h>
 
 TEST_CASE("creation") {
     Rational a(10, 7);
-    CHECK(a.getNumerator() == 10);
-    CHECK(a.getDenominator() == 7);
+    CHECK(a.num() == 10);
+    CHECK(a.denum() == 7);
 
     a  = Rational(-10, 7);
-    CHECK(a.getNumerator() == -10);
-    CHECK(a.getDenominator() == 7);
+    CHECK(a.num() == -10);
+    CHECK(a.denum() == 7);
 
     a = Rational(10, -7);
-    CHECK(a.getNumerator() == -10);
-    CHECK(a.getDenominator() == 7);
+    CHECK(a.num() == -10);
+    CHECK(a.denum() == 7);
 
     a = Rational(-10, -7);
-    CHECK(a.getNumerator() == 10);
-    CHECK(a.getDenominator() == 7);
+    CHECK(a.num() == 10);
+    CHECK(a.denum() == 7);
 
     a = Rational(10);
-    CHECK(a.getNumerator() == 10);
-    CHECK(a.getDenominator() == 1);
+    CHECK(a.num() == 10);
+    CHECK(a.denum() == 1);
 
     a = Rational(-10);
-    CHECK(a.getNumerator() == -10);
-    CHECK(a.getDenominator() == 1);
+    CHECK(a.num() == -10);
+    CHECK(a.denum() == 1);
     
     a = Rational(12, -16);
-    CHECK(a.getNumerator() == -3);
-    CHECK(a.getDenominator() == 4);
+    CHECK(a.num() == -3);
+    CHECK(a.denum() == 4);
     
     int flag = false;
     try {
@@ -131,4 +131,9 @@ TEST_CASE("increment/decrement") {
     CHECK(a == Rational(3, 4));
     CHECK(-a == Rational(-3, 4));
     CHECK(a == Rational(-3, 4));
+}
+
+TEST_CASE("in") {
+    Rational a;
+    a.read_from(std::cin);
 }

@@ -1,10 +1,10 @@
 #include "rational.h"
 
-int Rational::getNumerator() const {
+int Rational::num() const {
     return numerator;
 }
 
-int Rational::getDenominator() const {
+int Rational::denum() const {
     return denominator;
 }
 
@@ -92,6 +92,22 @@ Rational Rational::operator--(int) {
     return old_value;
 }
 
+std::istream& Rational::read_from(std::istream& istrm) {
+    std::string str;
+    istrm >> str;
+    numerator = std::stoi(str.substr(0, str.find("/")));
+    denominator = std::stoi(str.substr(str.find("/") + 1, str.length()));
+    if (denominator == 0 || denominator < 0) {
+        throw rationalException("Invalid input");
+    }
+    normalize();
+    return istrm;
+}
+
+std::ostream& Rational::write_to(std::ostream& ostrm) const {
+    ostrm << numerator << "/" << denominator;
+    return ostrm;
+}
 
 int Rational::gcd (const int a, const int b) const {
     int bigger = std::max(a, b);
@@ -145,14 +161,9 @@ Rational operator/(const Rational& left, const Rational& right) {
 }
 
 std::istream& operator>>(std::istream& in, Rational& value) {
-    int numerator = 0;
-    int denominator = 1;
-    in >> numerator >> denominator;
-    value.updateWith(numerator, denominator);
-    return in;
+    return value.read_from(in);
 }
 
 std::ostream& operator<<(std::ostream& out, const Rational& value) {
-    out << value.getNumerator() << '\\' << value.getDenominator();
-    return out;
+    return value.write_to(out);
 }
