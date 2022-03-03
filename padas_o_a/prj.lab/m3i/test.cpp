@@ -1,4 +1,4 @@
-#include "m3i.h"
+#include <m3i.h>
 #include <iostream>
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
