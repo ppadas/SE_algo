@@ -1,4 +1,4 @@
-#include "rational.h"
+#include <rational.h>
 #include <iostream>
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
