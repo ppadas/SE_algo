@@ -1,4 +1,5 @@
 #include "rational.h"
+#include <string>
 
 int Rational::num() const {
     return numerator;
