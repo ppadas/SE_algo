@@ -1,4 +1,4 @@
-#include "M3i.h"
+#include "m3i.h"
 
 M3i::M3i(const int x, const int y, const int z) {
     shape[0] = x;
