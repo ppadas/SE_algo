@@ -1,19 +1,19 @@
 
 
-class M3I {
+class M3i {
 public:
-    M3I() = default;
-    M3I(const int x, const int y, const int z);
-    M3I(const M3I&); //конструктор копирования
-    M3I& operator=(const M3I&); //присваивание копированием
-    M3I(M3I&&); //конструктор перемещения
-    M3I& operator=(M3I&&); //присваивание перемещением
+    M3i() = default;
+    M3i(const int x, const int y, const int z);
+    M3i(const M3i&); //конструктор копирования
+    M3i& operator=(const M3i&); //присваивание копированием
+    M3i(M3i&&); //конструктор перемещения
+    M3i& operator=(M3i&&); //присваивание перемещением
 
-    ~M3I();
+    ~M3i();
 
-    M3I clone() const;
+    M3i clone() const;
 
-    M3I& resize(const int x, const int y, const int z);
+    M3i& resize(const int x, const int y, const int z);
 
     int at(const int x, const int y, const int z) const;
     int& at(const int x, const int y, const int z);

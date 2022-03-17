@@ -1,6 +1,6 @@
-#include "m3i.h"
+#include "M3i.h"
 
-M3I::M3I(const int x, const int y, const int z) {
+M3i::M3i(const int x, const int y, const int z) {
     shape[0] = x;
     shape[1] = y;
     shape[2] = z;
@@ -9,7 +9,7 @@ M3I::M3I(const int x, const int y, const int z) {
     *ref_counter = 1;
 }
 
-M3I::M3I(const M3I& other) {
+M3i::M3i(const M3i& other) {
     shape[0] = other.size(0);
     shape[1] = other.size(1);
     shape[2] = other.size(2);
@@ -18,7 +18,7 @@ M3I::M3I(const M3I& other) {
     ++*ref_counter;
 }
 
-M3I& M3I::operator=(const M3I& other) {
+M3i& M3i::operator=(const M3i& other) {
     deleteCurrent();
     shape[0] = other.size(0);
     shape[1] = other.size(1);
@@ -29,7 +29,7 @@ M3I& M3I::operator=(const M3I& other) {
     return *this;
 }
 
-M3I::M3I(M3I&& other) {
+M3i::M3i(M3i&& other) {
     shape[0] = other.size(0);
     shape[1] = other.size(1);
     shape[2] = other.size(2);
@@ -39,7 +39,7 @@ M3I::M3I(M3I&& other) {
     other.ref_counter = nullptr;
 }
 
-M3I& M3I::operator=(M3I&& other) {
+M3i& M3i::operator=(M3i&& other) {
     deleteCurrent();
     shape[0] = other.size(0);
     shape[1] = other.size(1);
@@ -51,12 +51,12 @@ M3I& M3I::operator=(M3I&& other) {
     return *this;
 }
 
-M3I::~M3I() {
+M3i::~M3i() {
     deleteCurrent();
 }
 
-M3I M3I::clone() const {
-    M3I copy(shape[0], shape[1], shape[2]);
+M3i M3i::clone() const {
+    M3i copy(shape[0], shape[1], shape[2]);
     for (int x = 0; x < shape[0]; ++x) {
         for (int y = 0; y < shape[1]; ++y) {
             for (int z = 0; z < shape[2]; ++z) {
@@ -67,7 +67,7 @@ M3I M3I::clone() const {
     return copy;
 }
 
-M3I& M3I::resize(const int x, const int y, const int z) {
+M3i& M3i::resize(const int x, const int y, const int z) {
     int* old_values = values;
     int old_shape[3] = {shape[0], shape[1], shape[2]};
     shape[0] = x;
@@ -89,22 +89,22 @@ M3I& M3I::resize(const int x, const int y, const int z) {
     return *this;
 }
 
-int M3I::at(const int x, const int y, const int z) const {
+int M3i::at(const int x, const int y, const int z) const {
     return values[x * (shape[1] * shape[2]) + y * shape[2] + z];
 }
 
-int& M3I::at(const int x, const int y, const int z) {
+int& M3i::at(const int x, const int y, const int z) {
     return values[x * (shape[1] * shape[2]) + y * shape[2] + z];
 }
 
-int M3I::size(const int dim) const {
+int M3i::size(const int dim) const {
     if (dim > 2 || dim < 0) {
         //throw;
     }
     return shape[dim];
 }
 
-void M3I::fill(const int value) {
+void M3i::fill(const int value) {
     for (int x = 0; x < size(0); ++x) {
         for (int y = 0; y < size(1); ++y) {
             for (int z = 0; z < size(2); ++z) {
@@ -114,7 +114,7 @@ void M3I::fill(const int value) {
     }
 }
 
-void M3I::deleteCurrent() {
+void M3i::deleteCurrent() {
     if (ref_counter != nullptr) {
         --*ref_counter;
         if (*ref_counter == 0) {
