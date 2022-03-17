@@ -99,7 +99,7 @@ std::istream& Rational::read_from(std::istream& istrm) {
     numerator = std::stoi(str.substr(0, str.find("/")));
     denominator = std::stoi(str.substr(str.find("/") + 1, str.length()));
     if (denominator == 0 || denominator < 0) {
-        throw rationalException("Invalid input");
+        istrm.setstate(std::ios_base::failbit);
     }
     normalize();
     return istrm;

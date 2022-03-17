@@ -11,3 +11,7 @@ add_library(rational rational.cpp rational.h)
 add_executable(rational_test ${SRC_LIST})
 
 target_link_libraries(rational_test rational)
+
+add_custom_target(new_target
+    ${CMAKE_COMMAND} -E copy in_test.txt ../../bin/in_test.txt
+  )

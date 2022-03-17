@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/krolchonok/Documents/Study/3-course/SE_algo/SE_algo/padas_o_a/prj.lab/m3i/m3i.cpp
+m3i.h
+/home/krolchonok/Documents/Study/3-course/SE_algo/SE_algo/padas_o_a/prj.lab/m3i/m3i.h
+
+/home/krolchonok/Documents/Study/3-course/SE_algo/SE_algo/padas_o_a/prj.lab/m3i/m3i.h
+

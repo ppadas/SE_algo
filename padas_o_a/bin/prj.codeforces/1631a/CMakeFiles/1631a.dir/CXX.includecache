@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/krolchonok/Documents/Study/3-course/SE_algo/SE_algo/padas_o_a/prj.codeforces/1631a/1631a.cpp
+iostream
+-
+cstdlib
+-
+vector
+-
+algorithm
+-
+

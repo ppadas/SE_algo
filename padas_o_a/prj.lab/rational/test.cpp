@@ -133,7 +133,17 @@ TEST_CASE("increment/decrement") {
     CHECK(a == Rational(-3, 4));
 }
 
-TEST_CASE("in") {
-    Rational a;
-    a.read_from(std::cin);
+TEST_CASE("streams") {
+    std::ofstream fout("out_test.txt"); // создаём объект класса ofstream для записи и связываем его с файлом cppstudio.txt
+    std::ifstream fin("in_test.txt"); // создаём объект класса ofstream для записи и связываем его с файлом cppstudio.txt
+    if (!fout.is_open()) {
+        CHECK(false);
+    }
+    std::string s; 
+    while(getline(fin, s)){
+        std::cout << s << "\n";
+    }
+    fout << "Тесты\n"; // запись строки в файл
+    fout.close(); // закрываем файл
+    CHECK(fout.is_open());
 }
