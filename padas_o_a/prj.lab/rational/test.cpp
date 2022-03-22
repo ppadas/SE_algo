@@ -1,5 +1,8 @@
 #include <rational.h>
 #include <iostream>
+#include <sstream>
+#include <vector>
+#include <utility>
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
@@ -134,13 +137,87 @@ TEST_CASE("increment/decrement") {
 }
 
 TEST_CASE("streams") {
-    std::ofstream fout("out_test.txt"); // создаём объект класса ofstream для записи и связываем его с файлом cppstudio.txt
-    std::ifstream fin("in_test.txt"); // создаём объект класса ofstream для записи и связываем его с файлом cppstudio.txt
-    std::string s; 
-    while(getline(fin, s)){
-        std::cout << s << "\n";
+    SUBCASE("istream works") {
+        std::vector<std::string> input;
+        std::vector<std::pair<int, int>> answers;
+
+        input.push_back(" 10/15 ");
+        answers.push_back(std::make_pair(2, 3));
+
+        input.push_back(" -10/15 ");
+        answers.push_back(std::make_pair(-2, 3));
+
+        input.push_back(" 0/15 ");
+        answers.push_back(std::make_pair(0, 1));
+
+        for (size_t i = 0; i < input.size(); ++i) {
+            std::istringstream instr(input[i]);
+            Rational value;
+            instr >> value;
+            CHECK(value.num() == answers[i].first);
+            CHECK(value.denum() == answers[i].second);
+        }
     }
-    fout << "Тесты\n"; // запись строки в файл
-    fout.close(); // закрываем файл
-    CHECK(fout.is_open());
+
+    SUBCASE("ostream works") {
+        std::vector<std::string> answers;
+        std::vector<Rational> rationals;
+
+        rationals.push_back(Rational(10, 15));
+        answers.push_back("2/3");
+
+        rationals.push_back(Rational(-10, 15));
+        answers.push_back("-2/3");
+
+        rationals.push_back(Rational(0, 15));
+        answers.push_back("0/1");
+
+        for (size_t i = 0; i < rationals.size(); ++i) {
+            std::ostringstream outstr;
+            outstr << rationals[i];
+            CHECK(answers[i] == outstr.str());
+        }
+    }
+
+    SUBCASE("from istream to ostream") {
+        std::vector<std::string> input;
+        std::vector<std::string> output;
+
+        input.push_back("10/15");
+        output.push_back("2/3");
+
+        input.push_back("-10/15");
+        output.push_back("-2/3");
+
+        input.push_back("0/15");
+        output.push_back("0/1");
+
+        input.push_back("-0/15");
+        output.push_back("0/1");
+
+        for (size_t i = 0; i < input.size(); ++i) {
+            std::ostringstream outstr;
+            std::istringstream instr(input[i]);
+            Rational value;
+            instr >> value;
+            outstr << value;
+            CHECK(outstr.str() == output[i]);
+        }
+    }
+
+    SUBCASE("incorrect input") {
+        std::vector<std::string> input;
+        input.push_back("1/0");
+        input.push_back("2/");
+        input.push_back("/3");
+        input.push_back("5");
+        input.push_back("2/-3");
+
+        for(size_t i = 0; i < input.size(); ++i) {
+            std::istringstream instr(input[i]);
+            Rational value;
+            instr >> value;
+            CHECK(instr.fail());
+        }
+    }
 }

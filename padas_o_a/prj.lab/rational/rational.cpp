@@ -95,10 +95,37 @@ Rational Rational::operator--(int) {
 
 std::istream& Rational::read_from(std::istream& istrm) {
     std::string str;
+    bool only_digit = false;
     istrm >> str;
-    numerator = std::stoi(str.substr(0, str.find("/")));
-    denominator = std::stoi(str.substr(str.find("/") + 1, str.length()));
+    int slash_position = -1;
+    int offset = str[0] == '-' ? 1 : 0;
+    for (size_t i = offset; i < str.length(); ++i) {
+        if (!isdigit(str[i])) {
+            if(only_digit) {
+                istrm.setstate(std::ios_base::failbit);
+                return istrm;
+            }
+            if (str[i] == '/') {
+                if (i == 0 || i == (str.length() - 1)) {
+                    istrm.setstate(std::ios_base::failbit);
+                    return istrm;
+                }
+                only_digit = true;
+                slash_position = i;
+            } else {
+                istrm.setstate(std::ios_base::failbit);
+                return istrm;
+            }
+        }
+    }
+    if (slash_position == -1) {
+        istrm.setstate(std::ios_base::failbit);
+        return istrm;
+    }
+    numerator = std::stoi(str.substr(0, slash_position));
+    denominator = std::stoi(str.substr(slash_position + 1, str.length()));
     if (denominator == 0 || denominator < 0) {
+        //более аккуратно не eof;
         istrm.setstate(std::ios_base::failbit);
     }
     normalize();
