@@ -1,4 +1,4 @@
-
+#include<iostream>
 
 class M3i {
 public:
@@ -11,15 +11,15 @@ public:
 
     ~M3i();
 
-    M3i clone() const;
+    M3i Clone() const;
 
-    M3i& resize(const int x, const int y, const int z);
+    M3i& Resize(const int x, const int y, const int z);
 
-    int at(const int x, const int y, const int z) const;
-    int& at(const int x, const int y, const int z);
+    int At(const int x, const int y, const int z) const;
+    int& At(const int x, const int y, const int z);
 
-    int size(const int dim) const;
-    void fill(const int value);
+    int Size(const int dim) const;
+    void Fill(const int value);
 
 private:
     struct Data {
@@ -38,3 +38,6 @@ private:
 
     void deleteCurrent();
 };
+
+std::istream& operator>>(std::istream& istrm, M3i& m);
+std::ostream& operator<<(std::ostream& ostrm, const M3i& m);

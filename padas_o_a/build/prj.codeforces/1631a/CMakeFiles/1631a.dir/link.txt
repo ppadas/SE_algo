@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -Wall -std=c++11 -Wall -std=c++11 -Wall  -rdynamic CMakeFiles/1631a.dir/1631a.cpp.o  -o 1631a 

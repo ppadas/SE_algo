@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -Wall -std=c++11 -Wall -std=c++11 -Wall  -rdynamic CMakeFiles/m3i_test.dir/test.cpp.o  -o m3i_test  libm3i.a 

@@ -3,6 +3,9 @@
 M3i::M3i(const int x, const int y, const int z) {
     int shape[3] = {x, y, z};
     data = new Data(new int[x * y * z], shape, 1);
+    for (int i = 0; i < x * y * z; ++i) {
+        data -> values[i] = 0;
+    }
 }
 
 M3i::M3i(const M3i& other) {
@@ -33,19 +36,19 @@ M3i::~M3i() {
     deleteCurrent();
 }
 
-M3i M3i::clone() const {
+M3i M3i::Clone() const {
     M3i copy(data->shape[0], data->shape[1], data->shape[2]);
     for (int x = 0; x < data->shape[0]; ++x) {
         for (int y = 0; y < data->shape[1]; ++y) {
             for (int z = 0; z < data->shape[2]; ++z) {
-                copy.at(x, y, z) = at(x, y, z);
+                copy.At(x, y, z) = At(x, y, z);
             }
         }
     }
     return copy;
 }
 
-M3i& M3i::resize(const int x, const int y, const int z) {
+M3i& M3i::Resize(const int x, const int y, const int z) {
     int* old_values = data -> values;
     int old_shape[3] = {data -> shape[0], data -> shape[1], data -> shape[2]};
     data->shape[0] = x;
@@ -56,9 +59,9 @@ M3i& M3i::resize(const int x, const int y, const int z) {
         for (int j = 0; j < y; ++j) {
             for (int k = 0; k < z; ++k) {
                 if (i >= old_shape[0] || j >= old_shape[1] || k >= old_shape[2]) {
-                    at(i, j, k) = 0; 
+                    At(i, j, k) = 0; 
                 } else {
-                    at(i, j, k) = old_values[i * old_shape[1] * old_shape[2] + j * old_shape[2] + k];
+                    At(i, j, k) = old_values[i * old_shape[1] * old_shape[2] + j * old_shape[2] + k];
                 }
             }
         }
@@ -67,33 +70,33 @@ M3i& M3i::resize(const int x, const int y, const int z) {
     return *this;
 }
 
-int M3i::at(const int x, const int y, const int z) const {
+int M3i::At(const int x, const int y, const int z) const {
     return data -> values[x * (data -> shape[1] * data -> shape[2]) + y * data -> shape[2] + z];
 }
 
-int& M3i::at(const int x, const int y, const int z) {
+int& M3i::At(const int x, const int y, const int z) {
     return data -> values[x * (data -> shape[1] * data -> shape[2]) + y * data -> shape[2] + z];
 }
 
-int M3i::size(const int dim) const {
+int M3i::Size(const int dim) const {
     if (dim > 2 || dim < 0) {
         //throw;
     }
     return data -> shape[dim];
 }
 
-void M3i::fill(const int value) {
-    for (int x = 0; x < size(0); ++x) {
-        for (int y = 0; y < size(1); ++y) {
-            for (int z = 0; z < size(2); ++z) {
-                at(x, y, z) = 0;
+void M3i::Fill(const int value) {
+    for (int x = 0; x < Size(0); ++x) {
+        for (int y = 0; y < Size(1); ++y) {
+            for (int z = 0; z < Size(2); ++z) {
+                At(x, y, z) = value;
             }
         }
     }
 }
 
 void M3i::deleteCurrent() {
-    if (data -> ref_counter = 0) {
+    if (data != nullptr) {
         --data -> ref_counter;
         if (data -> ref_counter == 0) {
             if (data -> values != nullptr) {
@@ -102,4 +105,26 @@ void M3i::deleteCurrent() {
             delete data;
         }
     }
+}
+
+std::istream& operator>>(std::istream& istrm, M3i& m) {
+    for (int i = 0; i < m.Size(0); ++i) {
+        for (int j = 0; j < m.Size(1); ++j) {
+            for (int k = 0; k < m.Size(2); ++k) {
+                istrm >> m.At(i, j, k);
+            }
+        }
+    }
+    return istrm;
+}
+
+std::ostream& operator<<(std::ostream& ostrm, const M3i& m) {
+    for (int i = 0; i < m.Size(0); ++i) {
+        for (int j = 0; j < m.Size(1); ++j) {
+            for (int k = 0; k < m.Size(2); ++k) {
+                ostrm << m.At(i, j, k);
+            }
+        }
+    }
+    return ostrm;
 }
