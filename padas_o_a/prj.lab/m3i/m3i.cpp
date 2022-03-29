@@ -1,5 +1,5 @@
-#include "m3i.h"
-#include<cstring>
+#include <m3i.h>
+#include <cstring>
 
 M3i::M3i(const int x, const int y, const int z) {
     if (x <= 0 || y <= 0 || z <= 0) {
