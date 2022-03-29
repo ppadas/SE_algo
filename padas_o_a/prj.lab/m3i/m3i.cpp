@@ -1,12 +1,31 @@
 #include "m3i.h"
+#include<cstring>
 
 M3i::M3i(const int x, const int y, const int z) {
+    if (x <= 0 || y <= 0 || z <= 0) {
+        throw;
+    }
     int shape[3] = {x, y, z};
     data = new Data(new int[x * y * z], shape, 1);
     for (int i = 0; i < x * y * z; ++i) {
         data -> values[i] = 0;
     }
 }
+
+M3i::M3i(const std::initializer_list<std::initializer_list<std::initializer_list<int>>>& list) {
+    int shape[3] = {(int)list.size(), (int)list.begin()->size(), (int)list.begin()->begin()->size()};
+    data = new Data(new int[shape[0] * shape[1] * shape[2]], shape, 1);
+    int position = 0;
+    for (auto i : list) {
+        for (auto j : i) {
+            for (auto value : j) {
+                data->values[position] = value;
+                ++position;
+            }
+        }
+    }
+}
+
 
 M3i::M3i(const M3i& other) {
     data = other.data;
@@ -49,12 +68,16 @@ M3i M3i::Clone() const {
 }
 
 M3i& M3i::Resize(const int x, const int y, const int z) {
+    if (x <= 0 || y <= 0 || z <= 0) {
+        throw;
+    }
     int* old_values = data -> values;
     int old_shape[3] = {data -> shape[0], data -> shape[1], data -> shape[2]};
     data->shape[0] = x;
     data->shape[1] = y;
     data->shape[2] = z;
     data -> values = new int[x * y * z];
+    memset(data -> values, 0, x * y * z * sizeof(int));
     for (int i = 0; i < x; ++i) {
         for (int j = 0; j < y; ++j) {
             for (int k = 0; k < z; ++k) {
@@ -71,16 +94,22 @@ M3i& M3i::Resize(const int x, const int y, const int z) {
 }
 
 int M3i::At(const int x, const int y, const int z) const {
+    if (x >= Size(0) || x < 0 || y >= Size(1) || y < 0 || z >= Size(2) || z < 0) {
+        throw;
+    }
     return data -> values[x * (data -> shape[1] * data -> shape[2]) + y * data -> shape[2] + z];
 }
 
 int& M3i::At(const int x, const int y, const int z) {
+    if (x >= Size(0) || x < 0 || y >= Size(1) || y < 0 || z >= Size(2) || z < 0) {
+        throw;
+    }
     return data -> values[x * (data -> shape[1] * data -> shape[2]) + y * data -> shape[2] + z];
 }
 
 int M3i::Size(const int dim) const {
     if (dim > 2 || dim < 0) {
-        //throw;
+        throw;
     }
     return data -> shape[dim];
 }

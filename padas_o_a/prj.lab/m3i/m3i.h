@@ -1,9 +1,12 @@
 #include<iostream>
+#include<initializer_list>
 
 class M3i {
 public:
     M3i() = default;
     M3i(const int x, const int y, const int z);
+    M3i(const std::initializer_list<std::initializer_list<std::initializer_list<int>>>& list);
+
     M3i(const M3i&); //конструктор копирования
     M3i& operator=(const M3i&); //присваивание копированием
     M3i(M3i&&); //конструктор перемещения

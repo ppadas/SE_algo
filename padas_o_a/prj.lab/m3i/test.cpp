@@ -51,6 +51,22 @@ TEST_CASE("creation") {
         }
         //проверка, что удален tensor
     }
+
+    SUBCASE("initializer_list") {
+        M3i tensor = {{{1, 2, 3}, {4, 5, 6}}, {{7, 8, 9}, {10, 11, 12}}};
+        CHECK(tensor.Size(0) == 2);
+        CHECK(tensor.Size(1) == 2);
+        CHECK(tensor.Size(2) == 3);
+        int value = 1;
+        for (int i = 0; i < tensor.Size(0); ++i) {
+            for (int j = 0; j < tensor.Size(1); ++j) {
+                for (int k = 0; k < tensor.Size(2); ++k) {
+                    CHECK(tensor.At(i, j, k) == value);
+                    ++value;
+                }
+            }
+        }
+    }
 }
 
 TEST_CASE("= and clone") {
