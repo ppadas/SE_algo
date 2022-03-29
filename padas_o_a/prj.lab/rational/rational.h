@@ -1,3 +1,6 @@
+#ifndef __RATIONAL_LAB_H__
+#define __RATIONAL_LAB_H__
+
 #include <iostream>
 #include <algorithm>
 
@@ -74,3 +77,5 @@ Rational operator/(const Rational& left, const Rational& right);
 
 std::istream& operator>>(std::istream& in, Rational& value);
 std::ostream& operator<<(std::ostream& out, const Rational& value);
+
+#endif //__RATIONAL_LAB_H__

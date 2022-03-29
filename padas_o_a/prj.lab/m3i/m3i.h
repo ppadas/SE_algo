@@ -1,3 +1,6 @@
+#ifndef __M3I_LAB_H__
+#define __M3I_LAB_H__
+
 #include<iostream>
 #include<initializer_list>
 
@@ -44,3 +47,5 @@ private:
 
 std::istream& operator>>(std::istream& istrm, M3i& m);
 std::ostream& operator<<(std::ostream& ostrm, const M3i& m);
+
+#endif //__M3I_LAB_H__
