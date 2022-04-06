@@ -1,9 +1,13 @@
 #include <m3i.h>
 #include <cstring>
 
+M3i::M3i() {
+    data = new Data();
+}
+
 M3i::M3i(const int x, const int y, const int z) {
     if (x <= 0 || y <= 0 || z <= 0) {
-        throw;
+        throw std::out_of_range("X, y, z have to be > 0");
     }
     int shape[3] = {x, y, z};
     data = new Data(new int[x * y * z], shape, 1);
@@ -69,7 +73,7 @@ M3i M3i::Clone() const {
 
 M3i& M3i::Resize(const int x, const int y, const int z) {
     if (x <= 0 || y <= 0 || z <= 0) {
-        throw;
+        throw std::out_of_range("X, y, z have to be > 0");
     }
     int* old_values = data -> values;
     int old_shape[3] = {data -> shape[0], data -> shape[1], data -> shape[2]};
@@ -89,27 +93,29 @@ M3i& M3i::Resize(const int x, const int y, const int z) {
             }
         }
     }
-    delete[] old_values;
+    if (!old_values) {
+        delete[] old_values;
+    }
     return *this;
 }
 
 int M3i::At(const int x, const int y, const int z) const {
     if (x >= Size(0) || x < 0 || y >= Size(1) || y < 0 || z >= Size(2) || z < 0) {
-        throw;
+        throw std::out_of_range("Invalid coordinates in At");
     }
     return data -> values[x * (data -> shape[1] * data -> shape[2]) + y * data -> shape[2] + z];
 }
 
 int& M3i::At(const int x, const int y, const int z) {
     if (x >= Size(0) || x < 0 || y >= Size(1) || y < 0 || z >= Size(2) || z < 0) {
-        throw;
+        throw std::out_of_range("Invalid coordinates in At");
     }
     return data -> values[x * (data -> shape[1] * data -> shape[2]) + y * data -> shape[2] + z];
 }
 
 int M3i::Size(const int dim) const {
     if (dim > 2 || dim < 0) {
-        throw;
+        throw std::out_of_range("Dim in Size is in {0, 1, 2}");
     }
     return data -> shape[dim];
 }
@@ -137,6 +143,11 @@ void M3i::deleteCurrent() {
 }
 
 std::istream& operator>>(std::istream& istrm, M3i& m) {
+    int x = 0;
+    int y = 0;
+    int z = 0;
+    istrm >> x >> y >> z;
+    m.Resize(x, y, z);
     for (int i = 0; i < m.Size(0); ++i) {
         for (int j = 0; j < m.Size(1); ++j) {
             for (int k = 0; k < m.Size(2); ++k) {
@@ -148,12 +159,15 @@ std::istream& operator>>(std::istream& istrm, M3i& m) {
 }
 
 std::ostream& operator<<(std::ostream& ostrm, const M3i& m) {
+    ostrm << m.Size(0) << " " << m.Size(1) << " " << m.Size(2) << "\n";
     for (int i = 0; i < m.Size(0); ++i) {
         for (int j = 0; j < m.Size(1); ++j) {
             for (int k = 0; k < m.Size(2); ++k) {
-                ostrm << m.At(i, j, k);
+                ostrm << m.At(i, j, k) << " ";
             }
+            ostrm << "\n";
         }
+        ostrm << "\n";
     }
     return ostrm;
 }

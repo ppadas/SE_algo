@@ -6,7 +6,7 @@
 
 class M3i {
 public:
-    M3i() = default;
+    M3i();
     M3i(const int x, const int y, const int z);
     M3i(const std::initializer_list<std::initializer_list<std::initializer_list<int>>>& list);
 
