@@ -3,6 +3,8 @@
 
 #include<iostream>
 #include<initializer_list>
+#include <mutex>
+#include <atomic>
 
 class M3i {
 public:
@@ -37,7 +39,8 @@ private:
         }
         int* values = nullptr;
         int shape[3] = {0, 0, 0};
-        int ref_counter;
+        std::atomic<int> ref_counter;
+        std::mutex mutex;
     };
     
     Data* data;

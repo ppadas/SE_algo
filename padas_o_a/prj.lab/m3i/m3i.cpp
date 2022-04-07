@@ -60,6 +60,7 @@ M3i::~M3i() {
 }
 
 M3i M3i::Clone() const {
+    std::lock_guard<std::mutex> lock(data->mutex);
     M3i copy(data->shape[0], data->shape[1], data->shape[2]);
     for (int x = 0; x < data->shape[0]; ++x) {
         for (int y = 0; y < data->shape[1]; ++y) {
@@ -72,6 +73,7 @@ M3i M3i::Clone() const {
 }
 
 M3i& M3i::Resize(const int x, const int y, const int z) {
+    std::lock_guard<std::mutex> lock(data->mutex);
     if (x <= 0 || y <= 0 || z <= 0) {
         throw std::out_of_range("X, y, z have to be > 0");
     }
@@ -121,6 +123,7 @@ int M3i::Size(const int dim) const {
 }
 
 void M3i::Fill(const int value) {
+    std::lock_guard<std::mutex> lock(data->mutex);
     for (int x = 0; x < Size(0); ++x) {
         for (int y = 0; y < Size(1); ++y) {
             for (int z = 0; z < Size(2); ++z) {
