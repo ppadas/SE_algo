@@ -143,7 +143,9 @@ TEST_CASE("size") {
     }
 
     SUBCASE("errors") {
-
+        M3i tensor(2, 3, 4);
+        CHECK_THROWS(tensor.Size(-1));
+        CHECK_THROWS(tensor.Size(3));
     }
 }
 
@@ -158,7 +160,13 @@ TEST_CASE("at") {
     }
 
     SUBCASE("errors") {
-
+        M3i tensor(2, 3, 4);
+        CHECK_THROWS(tensor.At(-1, 0, 0));
+        CHECK_THROWS(tensor.At(0, -1, 0));
+        CHECK_THROWS(tensor.At(0, 0, -1));
+        CHECK_THROWS(tensor.At(2, 0, 0));
+        CHECK_THROWS(tensor.At(0, 3, 0));
+        CHECK_THROWS(tensor.At(0, 0, 4));
     }
 }
 
@@ -183,6 +191,12 @@ TEST_CASE("resize") {
     }
 
     SUBCASE("errors") {
-
+        M3i tensor(2, 3, 4);
+        CHECK_THROWS(tensor.Resize(0, 1, 1));
+        CHECK_THROWS(tensor.Resize(1, 0, 1));
+        CHECK_THROWS(tensor.Resize(1, 1, 0));
+        CHECK_THROWS(tensor.Resize(-1, 1, 1));
+        CHECK_THROWS(tensor.Resize(1, -1, 1));
+        CHECK_THROWS(tensor.Resize(1, 1, -1));
     }
 }

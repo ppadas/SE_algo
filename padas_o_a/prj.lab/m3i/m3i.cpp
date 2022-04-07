@@ -1,5 +1,6 @@
 #include <m3i.h>
 #include <cstring>
+#include <stdexcept>
 
 M3i::M3i() {
     data = new Data();
