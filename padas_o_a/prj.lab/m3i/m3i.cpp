@@ -12,8 +12,16 @@ M3i::M3i(const int x, const int y, const int z) {
     }
     int shape[3] = {x, y, z};
     data = new Data(new int[x * y * z], shape, 1);
+}
+
+M3i::M3i(const int x, const int y, const int z, const int default_value) {
+    if (x <= 0 || y <= 0 || z <= 0) {
+        throw std::out_of_range("X, y, z have to be > 0");
+    }
+    int shape[3] = {x, y, z};
+    data = new Data(new int[x * y * z], shape, 1);
     for (int i = 0; i < x * y * z; ++i) {
-        data -> values[i] = 0;
+        data -> values[i] = default_value;
     }
 }
 

@@ -6,21 +6,21 @@
 
 TEST_CASE("creation") {
     SUBCASE("size") {
-        M3i tensor(2, 3, 4);
+        M3i tensor(2, 3, 4, 5);
         CHECK(tensor.Size(0) == 2);
         CHECK(tensor.Size(1) == 3);
         CHECK(tensor.Size(2) == 4);
         for (int i = 0; i < tensor.Size(0); ++i) {
             for (int j = 0; j < tensor.Size(1); ++j) {
                 for (int k = 0; k < tensor.Size(2); ++k) {
-                    CHECK(tensor.At(i, j, k) == 0);
+                    CHECK(tensor.At(i, j, k) == 5);
                 }
             }
         }
     }
 
     SUBCASE("copy") {
-        M3i tensor(2, 3, 4);
+        M3i tensor(2, 3, 4, 0);
         tensor.At(0, 0, 0) = 4;
         M3i tensor_copy(tensor);
         CHECK(tensor_copy.Size(0) == 2);
@@ -37,7 +37,7 @@ TEST_CASE("creation") {
     }
 
     SUBCASE("move") {
-        M3i tensor(2, 3, 4);
+        M3i tensor(2, 3, 4, 0);
         tensor.At(0, 0, 0) = 4;
         M3i tensor_move(std::move(tensor));
         std::vector<int> values(2 * 3 * 4, 0);
@@ -71,7 +71,7 @@ TEST_CASE("creation") {
 
 TEST_CASE("= and clone") {
     SUBCASE("copy") {
-        M3i tensor(2, 3, 4);
+        M3i tensor(2, 3, 4, 0);
         tensor.At(0, 0, 0) = 4;
         M3i tensor_copy = tensor;
         CHECK(tensor_copy.Size(0) == 2);
@@ -88,7 +88,7 @@ TEST_CASE("= and clone") {
     }
 
     SUBCASE("move") {
-        M3i tensor(2, 3, 4);
+        M3i tensor(2, 3, 4, 0);
         tensor.At(0, 0, 0) = 4;
         M3i tensor_move = std::move(tensor);
         std::vector<int> values(2 * 3 * 4, 0);
@@ -104,7 +104,7 @@ TEST_CASE("= and clone") {
     }
 
     SUBCASE("clone") {
-        M3i tensor(2, 3, 4);
+        M3i tensor(2, 3, 4, 0);
         tensor.At(0, 0, 0) = 4;
         M3i tensor_clone = tensor.Clone();
         tensor_clone.At(1, 1, 1) = 5;
@@ -151,7 +151,7 @@ TEST_CASE("size") {
 
 TEST_CASE("at") {
     SUBCASE("it works") {
-        M3i tensor(2, 3, 4);
+        M3i tensor(2, 3, 4, 0);
         CHECK(tensor.At(1, 1, 1) == 0);
         tensor.Fill(1);
         CHECK(tensor.At(1, 1, 1) == 1);
@@ -160,7 +160,7 @@ TEST_CASE("at") {
     }
 
     SUBCASE("errors") {
-        M3i tensor(2, 3, 4);
+        M3i tensor(2, 3, 4, 0);
         CHECK_THROWS(tensor.At(-1, 0, 0));
         CHECK_THROWS(tensor.At(0, -1, 0));
         CHECK_THROWS(tensor.At(0, 0, -1));
@@ -172,7 +172,7 @@ TEST_CASE("at") {
 
 TEST_CASE("resize") {
     SUBCASE("it works") {
-        M3i tensor(2, 3, 4);
+        M3i tensor(2, 3, 4, 0);
         for (int i = 0; i < tensor.Size(0); ++i) {
             for (int j = 0; j < tensor.Size(1); ++j) {
                 for (int k = 0; k < tensor.Size(2); ++k) {

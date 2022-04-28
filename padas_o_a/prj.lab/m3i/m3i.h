@@ -10,6 +10,7 @@ class M3i {
 public:
     M3i();
     M3i(const int x, const int y, const int z);
+    M3i(const int x, const int y, const int z, const int default_value);
     M3i(const std::initializer_list<std::initializer_list<std::initializer_list<int>>>& list);
 
     M3i(const M3i&); //конструктор копирования
