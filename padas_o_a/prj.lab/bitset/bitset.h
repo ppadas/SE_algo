@@ -10,13 +10,13 @@ private:
 
 public:
   	BitSet() = default;
-  	BitSet(const BitSet &) = default;
-  	BitSet(BitSet &&) = default;
+  	BitSet(const BitSet&) = default;
+  	BitSet(BitSet&&) = default;
 	
 	BitSet(const int length, const bool default_value=false);
  
-  	BitSet& operator=(const BitSet &) = default;
-  	BitSet& operator=(BitSet &&) = default;
+  	BitSet& operator=(const BitSet&) = default;
+  	BitSet& operator=(BitSet&&) = default;
 	
 	~BitSet() = default;
 
@@ -36,7 +36,7 @@ public:
 private:
 	std::vector<uint8_t> data;
 	int size = 0;
-	const int block_size = 16;
+	int block_size = 8;
 
 	class BitHolder {
 	public:

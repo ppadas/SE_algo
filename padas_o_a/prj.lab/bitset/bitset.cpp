@@ -44,6 +44,7 @@ BitSet& BitSet::operator&=(const BitSet& other) {
 
 const BitSet BitSet::operator~() const {
     BitSet inverted(size, false);
+    std::cout << data.size() << " " << inverted.data.size() << "\n";
     for (long unsigned int i = 0; i < data.size(); ++i) {
         uint8_t result = ~data[i];
         inverted[i] = result;
@@ -83,7 +84,7 @@ bool BitSet::operator[](const int idx) const {
     }
     int index = idx / block_size;
     int offset = idx - index * block_size;
-    return data[index] & (1 << offset);
+    return (data[index] & (1 << offset));
 }
 
 BitSet::BitHolder& BitSet::BitHolder::operator=(bool value) {
@@ -92,7 +93,8 @@ BitSet::BitHolder& BitSet::BitHolder::operator=(bool value) {
 }
 
 BitSet::BitHolder::operator bool() const {
-    return owner[offset];
+    const BitSet copy = owner; //костыль
+    return copy[offset];
 }
 
 const BitSet operator|(const BitSet& first, const BitSet& second) {
