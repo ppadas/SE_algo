@@ -8,7 +8,7 @@ BitSet::BitSet(const int length, const bool default_value) {
         throw std::out_of_range("Length can't be <= 0");
     }
     size = length;
-    data = std::vector<uint8_t>((length + block_size - 1) / block_size, default_value);
+    data = std::vector<uint8_t>((length + block_size - 1) / block_size, default_value ? ~0 : 0);
 }
 
 BitSet& BitSet::operator|=(const BitSet& other) {
@@ -84,11 +84,17 @@ bool BitSet::operator[](const int idx) const {
     }
     int index = idx / block_size;
     int offset = idx - index * block_size;
-    return (data[index] & (1 << offset));
+    return (data[index] & (1 << (block_size - offset - 1)));
 }
 
 BitSet::BitHolder& BitSet::BitHolder::operator=(bool value) {
-    owner[offset] = value; // не должно работать
+    int index = offset / owner.block_size;
+    int offset_in = offset - index * owner.block_size;
+    if (value) {
+        owner.data[index] |= (1 << (owner.block_size - offset_in - 1));
+    } else {
+        owner.data[index] &= ~(1 << (owner.block_size - offset_in - 1));
+    }
     return *this;
 }
 
