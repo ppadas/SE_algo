@@ -44,10 +44,8 @@ BitSet& BitSet::operator&=(const BitSet& other) {
 
 const BitSet BitSet::operator~() const {
     BitSet inverted(size, false);
-    std::cout << data.size() << " " << inverted.data.size() << "\n";
     for (long unsigned int i = 0; i < data.size(); ++i) {
-        uint8_t result = ~data[i];
-        inverted[i] = result;
+        inverted.data[i] = ~data[i];
     }
     return inverted;
 }
@@ -104,7 +102,7 @@ BitSet::BitHolder::operator bool() const {
 }
 
 const BitSet operator|(const BitSet& first, const BitSet& second) {
-    if (first.Size() == second.Size()) {
+    if (first.Size() != second.Size()) {
         throw std::out_of_range("Sizes must be the same");
     }
     BitSet result = first;
@@ -112,7 +110,8 @@ const BitSet operator|(const BitSet& first, const BitSet& second) {
 }
 
 const BitSet operator&(const BitSet& first, const BitSet& second) {
-    if (first.Size() == second.Size()) {
+    if (first.Size() != second.Size()) {
+        std::cout << first.Size()  << " " << second.Size() << "\n";
         throw std::out_of_range("Sizes must be the same");
     }
     BitSet result = first;
@@ -120,7 +119,7 @@ const BitSet operator&(const BitSet& first, const BitSet& second) {
 }
 
 const BitSet operator^(const BitSet& first, const BitSet& second) {
-    if (first.Size() == second.Size()) {
+    if (first.Size() != second.Size()) {
         throw std::out_of_range("Sizes must be the same");
     }
     BitSet result = first;
