@@ -59,7 +59,7 @@ void BitSet::Resize(const int new_size) {
         throw std::out_of_range("Size must be >= 0");
     }
     size = new_size;
-    data.resize((new_size + block_size - 1) / block_size, ~0);
+    data.resize((new_size + block_size - 1) / block_size, 0);
 }
 
 void BitSet::Fill(const bool value) {
@@ -111,7 +111,6 @@ const BitSet operator|(const BitSet& first, const BitSet& second) {
 
 const BitSet operator&(const BitSet& first, const BitSet& second) {
     if (first.Size() != second.Size()) {
-        std::cout << first.Size()  << " " << second.Size() << "\n";
         throw std::out_of_range("Sizes must be the same");
     }
     BitSet result = first;
@@ -142,7 +141,7 @@ std::istream& operator>>(std::istream& istrm, BitSet& bs) {
     }
     bs.Resize(input.size());
     for (long unsigned int i = 0; i < input.size(); ++i) {
-        if (input[i] != '0' || input[i] != '1') {
+        if (input[i] != '0' && input[i] != '1') {
             istrm.setstate(std::ios_base::failbit);
             return istrm;
         }

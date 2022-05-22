@@ -165,25 +165,103 @@ TEST_CASE("bit operations") {
 
         for (int i = 0; i < result.Size(); ++i) {
             if ((i % 2 == 0 || i % 3 == 0) && (i % 6 != 0)) {
-                if (!result[i]) {
-                    std::cout << i << "\n";
-                }
                 CHECK(result[i]);
             } else {
-                if (result[i]) {
-                    std::cout << i << "\n";
-                }
                 CHECK(!result[i]);
             }
         }
     }
+
+    SUBCASE("Errors") {
+        BitSet bs1(20, false);
+        BitSet bs2(10, false);
+        CHECK_THROWS(bs1 & bs2);
+        CHECK_THROWS(bs1 | bs2);
+        CHECK_THROWS(bs1 ^ bs2);
+    }
 }
 
 TEST_CASE("Size") {
-    BitSet bs(20, false);
-    CHECK(bs.Size() == 20);
-    bs.Resize(10);
-    CHECK(bs.Size() == 10);
+    int size = 20;
+    BitSet bs(size, false);
+    bs[0] = true;
+    bs[size - 1] = true;
+    CHECK(bs.Size() == size);
+    bs.Resize(size / 2);
+    CHECK(bs.Size() == size / 2);
+    CHECK(bs[0]);
+    for (int i = 1; i < size / 2; ++i) {
+        CHECK(!bs[i]);
+    }
+
     bs.Resize(20);
-    CHECK(bs.Size() == 10);
+    CHECK(bs.Size() == size);
+    CHECK(bs[0]);
+    for (int i = 1; i < size / 2; ++i) {
+        CHECK(!bs[i]);
+    }
+}
+
+TEST_CASE("Fill") {
+    int size = 20;
+    BitSet bs(size, false);
+    bs.Fill(true);
+    for (int i = 0; i < size; ++i) {
+        CHECK(bs[i]);
+    }
+    bs.Fill(false);
+    for (int i = 0; i < size; ++i) {
+        CHECK(!bs[i]);
+    }
+}
+
+TEST_CASE("Out") {
+    int size = 10;
+    std::vector<std::string> answer;
+    std::vector<BitSet> bs;
+    BitSet bs1(size, false);
+    for (int i = 0; i < size; ++i) {
+        if(i % 2 == 0) {
+            bs1[i] = true;
+        }
+    }
+    answer.push_back("1010101010");
+    bs.push_back(bs1);
+    std::ostringstream outstr;
+    outstr << bs[0];
+    CHECK(outstr.str() == answer[0]);
+}
+
+TEST_CASE("In") {
+    SUBCASE("In and out") {
+        std::vector<std::string> in_data;
+        in_data.push_back("10101001");
+        in_data.push_back("10000101001");
+        in_data.push_back("1111111111");
+        in_data.push_back("0");
+        in_data.push_back("110");
+        for (size_t i = 0; i < in_data.size(); ++i) {
+            BitSet bs(1, true);
+            std::istringstream in(in_data[i]);
+            std::ostringstream out;
+            in >> bs;
+            out << bs;
+            CHECK(out.str() == in_data[i]);
+
+        }
+    }
+
+    SUBCASE("Errors") {
+        std::vector<std::string> in_data;
+        in_data.push_back("19101001");
+        in_data.push_back("10o01001");
+        in_data.push_back("1/0o01001");
+        in_data.push_back("true");
+        for (size_t i = 0; i < in_data.size(); ++i) {
+            BitSet bs(1, true);
+            std::istringstream in(in_data[i]);
+            in >> bs;
+            CHECK(in.fail());
+        }
+    }
 }
